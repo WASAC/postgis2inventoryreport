@@ -1,0 +1,1 @@
+python postgis2inventoryreport.py -d your_database -H localhost -P 5432 -u postgres -p your_password
