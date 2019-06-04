@@ -46,6 +46,8 @@ def create_argument_parser():
 
 
 def worker(db, dist, temp_file_path, main_directory):
+    creator = MapCreator(db, dist, main_directory)
+    creator.create()
     inventory = InventoryReport(db, dist, temp_file_path, main_directory)
     inventory.create()
 
@@ -61,12 +63,4 @@ if __name__ == "__main__":
     districts_obj = Districts(params.dist_id)
     districts = districts_obj.get_wss_list_each_district(db)
     for dist in districts:
-        creator = MapCreator(db, dist, main_directory)
-        creator.create()
-
-        inventory = InventoryReport(db, dist, temp_file_path, main_directory)
-        inventory.create()
-
-    #for dist in districts:
-    #    t = threading.Thread(target=worker, args=(db, dist, temp_file_path, main_directory))
-    #    t.start()
+        worker(db, dist, temp_file_path, main_directory)
