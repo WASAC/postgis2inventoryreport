@@ -1,4 +1,7 @@
 import psycopg2
+import geopandas as gpd
+
+
 class Database(object):
     def __init__(self, params):
         """
@@ -23,7 +26,6 @@ class Database(object):
         """
         try:
             self.conn = psycopg2.connect(host=self.host, port=self.port, database=self.database, user=self.user, password=self.password)
-
         except:
             print("Unable to connect to the database. Please check your options and try again.")
             exit()
@@ -46,3 +48,6 @@ class Database(object):
                 exit()
             rows = cur.fetchall()
             return rows
+
+    def get_geodataframe_from_postgis(self, sql):
+        return gpd.GeoDataFrame.from_postgis(sql, self.conn, geom_col='geom')

@@ -5,6 +5,21 @@
 A simple tool for exporting from a PostGIS table to Zipped QField datasets. Assumes [Python 3.6+](http://www.python.org/download/), 
 [psycopg2](http://initd.org/psycopg/download/), [python-docx](https://python-docx.readthedocs.io), [lxml](https://lxml.de/) are already installed and in your ````PATH````.
 
+````
+pip install psycopg2
+pip install python-docx
+pip install matplotlib
+pip install GDAL-2.4.1-cp37-cp37m-win_amd64.whl
+pip install Fiona-1.8.6-cp37-cp37m-win_amd64.whl
+pip install Shapely-1.6.4.post1-cp37-cp37m-win_amd64.whl
+pip install geopandas
+pip install descartes
+````
+Before installing geopandas, you can download whl file of GDAL, Fiona and Shapely as following webiste. You can chose the file depends on your platform(32bit or 64bit, Python version, etc).
+````
+https://www.lfd.uci.edu/~gohlke/pythonlibs/
+````
+
 The tool was designed for RWSS department of WASAC in Rwanda.
 
 ####Example usage:

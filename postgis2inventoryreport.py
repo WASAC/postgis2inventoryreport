@@ -4,6 +4,7 @@ import argparse
 from lib.database import Database
 from lib.district import Districts
 from lib.report_base.inventory_report import InventoryReport
+from lib.mapcreator import MapCreator
 
 
 def create_argument_parser():
@@ -44,8 +45,8 @@ def create_argument_parser():
     return parser.parse_args()
 
 
-def worker(db, dist, temp_file_path, current_date):
-    inventory = InventoryReport(db, dist, temp_file_path, current_date)
+def worker(db, dist, temp_file_path, main_directory):
+    inventory = InventoryReport(db, dist, temp_file_path, main_directory)
     inventory.create()
 
 
@@ -55,9 +56,17 @@ if __name__ == "__main__":
 
     temp_file_path = "./template/template_inventory_report.docx"
     current_date = datetime.datetime.now()
+    main_directory = current_date.strftime('%Y%m%d_%H%M%S') + "_RWSS_Inventory_Reports"
 
     districts_obj = Districts(params.dist_id)
     districts = districts_obj.get_wss_list_each_district(db)
     for dist in districts:
-        t = threading.Thread(target=worker, args=(db, dist, temp_file_path, current_date))
-        t.start()
+        creator = MapCreator(db, dist, main_directory)
+        creator.create()
+
+        inventory = InventoryReport(db, dist, temp_file_path, main_directory)
+        inventory.create()
+
+    #for dist in districts:
+    #    t = threading.Thread(target=worker, args=(db, dist, temp_file_path, main_directory))
+    #    t.start()

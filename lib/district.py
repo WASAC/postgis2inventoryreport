@@ -26,8 +26,9 @@ class Districts(object):
         query += "FROM wss a "
         query += "INNER JOIN district b "
         query += "ON a.dist_id = b.dist_id "
+        query += "WHERE a.geom IS NOT NULL "
         if len(self.dist_id_list) > 0:
-            query += "WHERE a.dist_id IN (" + self.dist_id_list + ")"
+            query += "AND a.dist_id IN (" + self.dist_id_list + ") "
         query += "GROUP BY a.dist_id, b.district "
 
         result = db.execute(query)

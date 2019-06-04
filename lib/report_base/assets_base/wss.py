@@ -58,9 +58,6 @@ class WssList(AssetsBase):
                 ['Management', 'po_name', ''], ['Category of Managemen', 'po_type', '']]
 
     def create(self, db, doc):
-        doc.add_heading('Map of the entire systems', level=2)
-        self.add_temp_image(doc)
-        doc.add_page_break()
         self.add_main_title(doc)
         self.get_assets_info(db)
         self.add_table(doc)

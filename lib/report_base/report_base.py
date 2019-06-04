@@ -108,5 +108,8 @@ class ReportBase(object):
         trPr.append(tblHeader)
         return row
 
+    def add_image(self, doc, file):
+        doc.add_picture(file, width=Inches(6))
+
     def add_temp_image(self, doc):
-        doc.add_picture('./template/replace_image.png', width=Inches(6))
+        self.add_image(doc, './template/replace_image.png')
