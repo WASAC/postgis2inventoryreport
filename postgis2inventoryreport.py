@@ -1,4 +1,3 @@
-import threading
 import datetime
 import argparse
 from lib.database import Database
