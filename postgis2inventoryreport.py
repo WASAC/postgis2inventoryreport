@@ -10,7 +10,6 @@ def create_argument_parser():
     """
      Create the parameters for the script
     """
-
     parser = argparse.ArgumentParser(
         description="Create a QField datasets from PostGIS database.",
         epilog="Example usage: python postgis2qfield.py -d yourdatabase -H localhost - p 5432 "
@@ -44,16 +43,8 @@ def create_argument_parser():
     return parser.parse_args()
 
 
-def worker(db, dist, temp_file_path, main_directory):
-    creator = MapCreator(db, dist, main_directory)
-    creator.create()
-    inventory = InventoryReport(db, dist, temp_file_path, main_directory)
-    inventory.create()
-
-
-if __name__ == "__main__":
-    params = create_argument_parser()
-    db = Database(params)
+def create_reports(args):
+    db = Database(args)
 
     temp_file_path = "./template/template_inventory_report.docx"
     current_date = datetime.datetime.now()
@@ -62,4 +53,13 @@ if __name__ == "__main__":
     districts_obj = Districts(params.dist_id)
     districts = districts_obj.get_wss_list_each_district(db)
     for dist in districts:
-        worker(db, dist, temp_file_path, main_directory)
+        creator = MapCreator(db, dist, main_directory)
+        creator.create()
+    for dist in districts:
+        inventory = InventoryReport(db, dist, temp_file_path, main_directory)
+        inventory.create()
+
+
+if __name__ == "__main__":
+    params = create_argument_parser()
+    create_reports(params)

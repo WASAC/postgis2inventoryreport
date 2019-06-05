@@ -36,7 +36,7 @@ class InventoryReport(ReportBase):
         self.docx_replace(doc, values)
 
         doc.add_heading('Rural Water Suppy Systems in {0} District'.format(self.district.district), level=1)
-        doc.add_heading('About Situation of District', level=2)
+        doc.add_heading('About Summary of District', level=2)
         doc.add_paragraph('Please describe the WSS here. ')
         doc.add_heading('Map of the entire systems', level=2)
         dist_image = "/".join([dist_image_dir, "{0}.png".format(str(self.district.dist_id))])
@@ -51,8 +51,11 @@ class InventoryReport(ReportBase):
 
         for wss_data in wss_list:
             doc.add_heading('{0} {1} WSS'.format(wss_data.wss_id, wss_data.wss_name), level=1)
-            doc.add_heading('About Situation of {0} WSS'.format(wss_data.wss_name), level=2)
-            doc.add_paragraph('Please describe the WSS here. ')
+            doc.add_heading('About Summary of {0} WSS'.format(wss_data.wss_name), level=2)
+            if not wss_data.description:
+                doc.add_paragraph('Description for the WSS is not yet registered in GIS database. ')
+            else:
+                doc.add_paragraph(wss_data.description)
             doc.add_heading('Map of the WSS', level=2)
             wss_image = "/".join([dist_image_dir, "{0}.png".format(str(wss_data.wss_id))])
             if os.path.exists(wss_image):

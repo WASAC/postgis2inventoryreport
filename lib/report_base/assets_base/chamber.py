@@ -21,13 +21,6 @@ class Chambers(AssetsBase):
         self.chamber_type = ''
 
     def get_assets_info(self, db):
-        """
-                Get the list of WSS by targeted district from PostGIS
-
-                Parameters
-                ----------
-                db : Database object
-                """
         query = "   SELECT "
         query += "     a.chamber_id, "
         query += "     round(cast(st_x(a.geom) as numeric),6) as x, "

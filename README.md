@@ -2,9 +2,19 @@
 
 ## postgis2inventoryreport.py
 
-A simple tool for exporting from a PostGIS table to Zipped QField datasets. Assumes [Python 3.6+](http://www.python.org/download/), 
-[psycopg2](http://initd.org/psycopg/download/), [python-docx](https://python-docx.readthedocs.io), [lxml](https://lxml.de/) are already installed and in your ````PATH````.
+A simple tool for exporting from a PostGIS table to Inventory Data Reports in Rwanda. Assumes 
+[Python 3.6+](http://www.python.org/download/), 
+[psycopg2](http://initd.org/psycopg/download/), 
+[python-docx](https://python-docx.readthedocs.io), 
+[matplotlib](https://matplotlib.org/), 
+[geopandas](http://geopandas.org/), 
+[GDAL](https://gdal.org/),
+[Fiona](https://github.com/Toblerity/Fiona), 
+[Shapely](https://github.com/Toblerity/Shapely), 
+[descartes](https://bitbucket.org/sgillies/descartes/src/default/) 
+are already installed and in your ````PATH````.
 
+The following is example of installation procedures by pip installation.
 ````
 pip install psycopg2
 pip install python-docx
@@ -15,9 +25,13 @@ pip install Shapely-1.6.4.post1-cp37-cp37m-win_amd64.whl
 pip install geopandas
 pip install descartes
 ````
-Before installing geopandas, you can download whl file of GDAL, Fiona and Shapely as following webiste. You can chose the file depends on your platform(32bit or 64bit, Python version, etc).
+Before installing geopandas, you can download whl file of GDAL, Fiona and Shapely from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/). You can chose the file depends on your platform(32bit or 64bit, Python version, etc).
+
+If you failed to install geopandas by pip or wheel file, you can install from Git directly as below.
 ````
-https://www.lfd.uci.edu/~gohlke/pythonlibs/
+git clone https://github.com/geopandas/geopandas.git
+cd geopandas
+pip install .
 ````
 
 The tool was designed for RWSS department of WASAC in Rwanda.
@@ -34,7 +48,7 @@ To export the following information of ````water pipeline network````from databa
     * List of Water Sources
     * List of Water Connections (Houlsehold, Public Tap, Water Kiosk and Industry)
 
-But this script will not create the explanation for each district and wss, and also not create maps for each system. After creating the inventory report, you can make maps and explanation by yourself and insert them into the report.
+But this script will not create the explanation for each district and wss. After creating the inventory report, you can make explanation by yourself and insert them into the report.
 
 Before running the script, kindly check the database settings at command line parameters.
 ````

@@ -13,6 +13,7 @@ class WssList(AssetsBase):
             self.po_type = params[5]
             self.lon = params[6]
             self.lat = params[7]
+            self.description = params[8]
 
     def __init__(self, dist_id):
         super().__init__(None, "Water Supply Systems")
@@ -38,7 +39,8 @@ class WssList(AssetsBase):
         query += "   c.po_name, "
         query += "   c.po_type, "
         query += "   st_x(st_centroid(a.geom)) as lon,  "
-        query += "   st_y(st_centroid(a.geom)) as lat "
+        query += "   st_y(st_centroid(a.geom)) as lat, "
+        query += "   a.description "
         query += " FROM wss a "
         query += " LEFT JOIN management b "
         query += " ON a.wss_id = b.wss_id "

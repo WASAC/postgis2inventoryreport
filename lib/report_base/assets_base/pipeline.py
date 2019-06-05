@@ -17,13 +17,6 @@ class PipelineList(AssetsBase):
         super().__init__(wss_id, "Pipeline")
 
     def get_assets_info(self, db):
-        """
-                Get the list of WSS by targeted district from PostGIS
-
-                Parameters
-                ----------
-                db : Database object
-                """
         query = "  SELECT "
         query += "    y.material, "
         query += "    y.pipe_size, "

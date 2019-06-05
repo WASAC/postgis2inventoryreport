@@ -23,13 +23,6 @@ class Reservoirs(AssetsBase):
         super().__init__(wss_id, "Reservoirs")
 
     def get_assets_info(self, db):
-        """
-                Get the list of WSS by targeted district from PostGIS
-
-                Parameters
-                ----------
-                db : Database object
-                """
         query = " SELECT "
         query += "    a.reservoir_id, "
         query += "    round(cast(st_x(a.geom) as numeric),6) as x, "

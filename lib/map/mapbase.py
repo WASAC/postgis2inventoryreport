@@ -12,22 +12,21 @@ class MapBase(object):
         if not os.path.exists(self.directory):
             os .makedirs(self.directory)
         mpl.use('Agg')
+        mpl.rcParams['axes.xmargin'] = 0
+        mpl.rcParams['axes.ymargin'] = 0
 
     def create(self):
         plt.figure()
-        fig, ax = plt.subplots(1, figsize=(10, 8))
-        ax.set_aspect('equal')
+        fig, ax = plt.subplots(1, figsize=(8, 5))
 
         self.create_layers(ax)
+        ax.set_aspect('equal')
 
-        plt.legend(frameon=False, loc='lower center', ncol=3,
-                   bbox_to_anchor=(0.5, -0.6)
-                   )
-        plt.subplots_adjust(bottom=0.4)
+        plt.legend(frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(0.5, -0.6), borderaxespad=0)
         ax.set_axis_off()
 
     def save(self):
-        plt.savefig(self.filename)
+        plt.savefig(self.filename, bbox_inches="tight", pad_inches=0)
         plt.close()
 
     @abstractmethod
