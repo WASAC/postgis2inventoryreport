@@ -55,9 +55,12 @@ class WssList(AssetsBase):
         return self.assetsList
 
     def create_column_list(self):
-        return [['WSS ID', 'wss_id', ''], ['Name', 'wss_name', '0'],
-                ['Type', 'wss_type', '0'], ['Status', 'status', ''],
-                ['Management', 'po_name', ''], ['Category of Managemen', 'po_type', '']]
+        return [AssetsBase.Column('WSS ID', 'wss_id', ''),
+                AssetsBase.Column('Name', 'wss_name', '0'),
+                AssetsBase.Column('Type', 'wss_type', '0'),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('Management', 'po_name', ''),
+                AssetsBase.Column('Category of Management', 'po_type', '')]
 
     def create(self, db, doc):
         self.add_main_title(doc)

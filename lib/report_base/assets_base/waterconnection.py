@@ -64,14 +64,19 @@ class WaterConnections(AssetsBase):
         doc.add_heading('List of {0}'.format(self.connection_type), level=4)
 
     def create_column_list(self):
-        return [['ID', 'id', ''], ['X', 'x', ''], ['Y', 'y', ''], ['Z', 'z', ''],
-                ['Type', 'connection_type', ''],
-                ['Construction', 'construction_year', ''], ['Status', 'status', ''],
-                ['No of Users', 'no_user', ''], ['Customer', 'customer_name', ''],
-                ['Water Meter', 'water_meter', 'NO'],
-                ['Meter Installation date', 'meter_installation_date', ''],
-                ['Disconnection  date', 'disconnection_date', ''],
-                ['Observation', 'observation', '']]
+        return [AssetsBase.Column('ID', 'id', ''),
+                AssetsBase.Column('X', 'x', ''),
+                AssetsBase.Column('Y', 'y', ''),
+                AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Type', 'connection_type', ''),
+                AssetsBase.Column('Construction', 'construction_year', ''),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('No of Users', 'no_user', ''),
+                AssetsBase.Column('Customer', 'customer_name', ''),
+                AssetsBase.Column('Water Meter', 'water_meter', 'NO'),
+                AssetsBase.Column('Meter Installation date', 'meter_installation_date', ''),
+                AssetsBase.Column('Disconnection  date', 'disconnection_date', ''),
+                AssetsBase.Column('Observation', 'observation', '')]
 
     def create(self, db, doc):
         connection_type_list = ["Public Tap",

@@ -49,11 +49,13 @@ class WaterSources(AssetsBase):
         return self.assetsList
 
     def create_column_list(self):
-        return [['ID', 'id', ''], ['X', 'x', ''], ['Y', 'y', ''], ['Z', 'z', ''],
-                  ['Construction', 'construction_year', ''], ['Status', 'status', ''],
-                  ['Type', 'source_type', ''], ['Discharge', 'discharge', ''],
-                  ['has Water Meter', 'has_water_meter', 'NO'],
-                  ['has Chlorination Unit', 'has_clorination', 'NO'],
-                  ['Observation', 'observation', '']]
-
-
+        return [AssetsBase.Column('ID', 'id', ''),
+                AssetsBase.Column('X', 'x', ''),
+                AssetsBase.Column('Y', 'y', ''),
+                AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Construction', 'construction_year', ''),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('Type', 'source_type', ''),
+                AssetsBase.Column('has Water Meter', 'has_water_meter', 'NO'),
+                AssetsBase.Column('has Chlorination Unit', 'has_clorination', 'NO'),
+                AssetsBase.Column('Observation', 'observation', '')]

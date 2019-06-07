@@ -51,12 +51,17 @@ class Chambers(AssetsBase):
         doc.add_heading('List of {0}'.format(self.chamber_type), level=4)
 
     def create_column_list(self):
-        return [['ID', 'id', ''], ['X', 'x', ''], ['Y', 'y', ''], ['Z', 'z', ''],
-                ['Construction', 'construction_year', ''], ['Status', 'status', ''],
-                ['Size', 'chamber_size', ''], ['Material', 'material', ''],
-                ['for Break pressure', 'for_breakpressure', 'NO'],
-                ['has Chlorination Unit', 'has_clorination', 'NO'],
-                ['Observation', 'observation', '']]
+        return [AssetsBase.Column('ID', 'id', ''),
+                AssetsBase.Column('X', 'x', ''),
+                AssetsBase.Column('Y', 'y', ''),
+                AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Construction', 'construction_year', ''),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('Size', 'chamber_size', ''),
+                AssetsBase.Column('Material', 'material', ''),
+                AssetsBase.Column('for Break pressure', 'for_breakpressure', 'NO'),
+                AssetsBase.Column('has Chlorination Unit', 'has_clorination', 'NO'),
+                AssetsBase.Column('Observation', 'observation', '')]
 
     def create(self, db, doc):
         chamber_type_list = ["Valve chamber", "Air release chamber", "Washout chamber",

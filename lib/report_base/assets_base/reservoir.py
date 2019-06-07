@@ -53,11 +53,16 @@ class Reservoirs(AssetsBase):
         return self.assetsList
 
     def create_column_list(self):
-        return [['ID', 'id', ''], ['X', 'x', ''], ['Y', 'y', ''], ['Z', 'z', ''],
-                ['Construction', 'construction_year', ''], ['Status', 'status', ''],
-                ['Type', 'reservoir_type', ''], ['Capacity', 'capacity', ''],
-                ['Material', 'material', ''],
-                ['has Water Meter', 'has_water_meter', 'NO'],
-                ['for Break pressure', 'for_breakpressure', 'NO'],
-                ['has Chlorination Unit', 'has_clorination', 'NO'],
-                ['Observation', 'observation', '']]
+        return [AssetsBase.Column('ID', 'id', ''),
+                AssetsBase.Column('X', 'x', ''),
+                AssetsBase.Column('Y', 'y', ''),
+                AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Construction', 'construction_year', ''),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('Type', 'reservoir_type', ''),
+                AssetsBase.Column('Capacity', 'capacity', ''),
+                AssetsBase.Column('Material', 'material', ''),
+                AssetsBase.Column('has Water Meter', 'has_water_meter', 'NO'),
+                AssetsBase.Column('for Break pressure', 'for_breakpressure', 'NO'),
+                AssetsBase.Column('has Chlorination Unit', 'has_clorination', 'NO'),
+                AssetsBase.Column('Observation', 'observation', '')]

@@ -65,48 +65,29 @@ class PumpingStations(AssetsBase):
         return self.assetsList
 
     def create_column_list(self):
-        return [['ID', 'id', ''], ['X', 'x', ''], ['Y', 'y', ''], ['Z', 'z', ''],
-                  ['Construction', 'construction_year', ''], ['Status', 'status', ''],
-                  ['Head', 'head_pump', ''], ['Power', 'power_pump', ''], ['Discharge', 'discharge_pump', ''],
-                  ['Type', 'pump_type', ''], ['Source', 'power_source', ''], ['No of Pumps', 'no_pump', ''],
-                  ['KVA', 'kva', ''], ['No of Generators', 'no_generator', ''], ['has Water Meter', 'has_water_meter', 'NO'],
-                  ['Meter Installation', 'meter_installation_date', ''],
-                  ['Antihummer Installation', 'installation_antihummer', 'NO'],
-                  ['Antihummer Capacity', 'capacity_antihummber', ''],
-                  ['has Chlorination Unit', 'has_clorination', 'NO'],
-                  ['Observation', 'observation', '']]
+        return [AssetsBase.Column('ID', 'id', ''),
+                AssetsBase.Column('X', 'x', ''),
+                AssetsBase.Column('Y', 'y', ''),
+                AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Construction', 'construction_year', ''),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('Head', 'head_pump', ''),
+                AssetsBase.Column('Power', 'power_pump', ''),
+                AssetsBase.Column('Discharge', 'discharge_pump', ''),
+                AssetsBase.Column('Type', 'pump_type', ''),
+                AssetsBase.Column('Source', 'power_source', ''),
+                AssetsBase.Column('No of Pumps', 'no_pump', ''),
+                AssetsBase.Column('KVA', 'kva', ''),
+                AssetsBase.Column('No of Generators', 'no_generator', ''),
+                AssetsBase.Column('has Water Meter', 'has_water_meter', 'NO'),
+                AssetsBase.Column('Meter Installation', 'meter_installation_date', ''),
+                AssetsBase.Column('Antihummer Installation', 'installation_antihummer', 'NO'),
+                AssetsBase.Column('Antihummer Capacity', 'capacity_antihummber', ''),
+                AssetsBase.Column('has Chlorination Unit', 'has_clorination', 'NO'),
+                AssetsBase.Column('Observation', 'observation', '')]
 
     def add_table(self, doc):
+        super().add_table(doc)
         if len(self.assetsList) == 0:
             doc.add_paragraph('No item')
-            return
-
-        keyval = self.create_column_list()
-        max_col_table = 10
-        table = doc.add_table(rows=1, cols=max_col_table, style='Table Grid')
-        hdr_cells = table.rows[0].cells
-        for val in keyval:
-            if keyval.index(val) < max_col_table:
-                hdr_cells[keyval.index(val)].text = val[0]
-
-        self.set_repeat_table_header(table.rows[0])
-
-        for data in self.assetsList:
-            row_cells = table.add_row().cells
-            for val2 in keyval:
-                if keyval.index(val2) < max_col_table:
-                    row_cells[keyval.index(val2)].text = str(data.__dict__[val2[1]]) or val2[2]
-        self.add_break(doc)
-
-        for data in self.assetsList:
-            doc.add_heading('Pumping Station #{0}'.format(str(data.id)), level=5)
-            table2 = doc.add_table(rows=1, cols=2, style='Table Grid')
-            hdr_cells2 = table2.rows[0].cells
-            hdr_cells2[0].text = 'Item'
-            hdr_cells2[1].text = 'Desription'
-            self.set_repeat_table_header(table2.rows[0])
-            for val3 in keyval:
-                row_cells2 = table2.add_row().cells
-                row_cells2[0].text = val3[0]
-                row_cells2[1].text = str(data.__dict__[val3[1]]) or val3[2]
-            self.add_break(doc)
+        self.add_table_vertical(doc)

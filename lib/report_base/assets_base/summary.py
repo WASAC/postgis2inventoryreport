@@ -241,10 +241,13 @@ class Summary(AssetsBase):
         return self.assetsList
 
     def create_column_list(self):
-        return [['Assets', 'item', ''], ['Unknown', 'no_unknown', '0'],
-                ['Fully Functional', 'no_fully', '0'], ['Partially Functional', 'no_partially', '0'],
-                ['Abandoned', 'no_abandoned', '0'], ['Non Functional', 'no_not', '0'],
-                ['Total', 'no_total', '0']]
+        return [AssetsBase.Column('Assets', 'item', ''),
+                AssetsBase.Column('Unknown', 'no_unknown', '0'),
+                AssetsBase.Column('Fully Functional', 'no_fully', '0'),
+                AssetsBase.Column('Partially Functional', 'no_partially', '0'),
+                AssetsBase.Column('Abandoned', 'no_abandoned', '0'),
+                AssetsBase.Column('Non Functional', 'no_not', '0'),
+                AssetsBase.Column('Total', 'no_total', '0')]
 
     def create(self, db, doc):
         self.add_main_title(doc)
