@@ -15,8 +15,6 @@ class MapCreator(object):
         dist_dir = "/".join([self.main_directory, "images", str(self.district.dist_id)])
         dist_map = DistrictMap(self.db, dist_dir, self.district.dist_id, self.district.wss_id_list)
         dist_map.create()
-        dist_map.save()
         for wss_id in self.district.wss_id_list.split(','):
             wss = WssMap(self.db, dist_dir, wss_id)
             wss.create()
-            wss.save()

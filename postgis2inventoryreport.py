@@ -4,6 +4,7 @@ from lib.database import Database
 from lib.district import Districts
 from lib.report_base.inventory_report import InventoryReport
 from lib.mapcreator import MapCreator
+import threading
 
 
 def create_argument_parser():
@@ -55,9 +56,9 @@ def create_reports(args):
     for dist in districts:
         creator = MapCreator(db, dist, main_directory)
         creator.create()
-    for dist in districts:
         inventory = InventoryReport(db, dist, temp_file_path, main_directory)
-        inventory.create()
+        thread = threading.Thread(target=inventory.create)
+        thread.start()
 
 
 if __name__ == "__main__":

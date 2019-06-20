@@ -69,11 +69,7 @@ class InventoryReport(ReportBase):
                                Reservoirs(wss_data.wss_id), PumpingStations(wss_data.wss_id),
                                WaterSources(wss_data.wss_id), WaterConnections(wss_data.wss_id)]:
                 assets_obj.create(self.db, doc)
-                doc.save(new_file_path)
-
             doc.add_page_break()
-            doc.save(new_file_path)
-
         doc.save(new_file_path)
         del doc
         print("It created Inventory Report of {0} at folder: {1}".format(self.district.district, new_file_path))
