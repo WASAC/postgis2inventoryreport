@@ -24,6 +24,9 @@ class PumpingStations(AssetsBase):
             self.installation_antihummer = params[17]
             self.capacity_antihummber = params[18]
             self.has_clorination = params[19]
+            self.sector = params[20]
+            self.cell = params[21]
+            self.village = params[22]
 
     def __init__(self, wss_id):
         super().__init__(wss_id, "Pumping Stations")
@@ -50,12 +53,18 @@ class PumpingStations(AssetsBase):
         query += "    a.meter_installation_date,"
         query += "    CASE WHEN a.installation_antihummer = true THEN 'YES' ELSE 'NO' END as installation_antihummer,  "
         query += "    a.capacity_antihummber,"
-        query += "    CASE WHEN a.chlorination_unit = true THEN 'YES' ELSE 'NO' END as has_clorination "
+        query += "    CASE WHEN a.chlorination_unit = true THEN 'YES' ELSE 'NO' END as has_clorination, "
+        query += "    h.sector, "
+        query += "    g.cell, "
+        query += "    f.village "
         query += "  FROM pumping_station a "
         query += "  INNER JOIN status b "
         query += "  ON a.status = b.code "
         query += "  INNER JOIN rwanda_dem_10m e "
         query += "  ON ST_Intersects(e.rast, a.geom) "
+        query += "  INNER JOIN village f ON ST_Intersects(f.geom, a.geom) "
+        query += "  INNER JOIN cell g ON f.cell_id = g.cell_id "
+        query += "  INNER JOIN sector h ON f.sect_id = h.sect_id "
         query += "  WHERE "
         query += "   a.wss_id = {0}".format(self.wss_id)
         result = db.execute(query)
@@ -74,16 +83,32 @@ class PumpingStations(AssetsBase):
                 AssetsBase.Column('Head', 'head_pump', ''),
                 AssetsBase.Column('Power', 'power_pump', ''),
                 AssetsBase.Column('Discharge', 'discharge_pump', ''),
+                AssetsBase.Column('Type', 'pump_type', '')
+                ]
+
+    def create_vertical_column_list(self):
+        return [AssetsBase.Column('ID', 'id', ''),
+                AssetsBase.Column('X', 'x', ''),
+                AssetsBase.Column('Y', 'y', ''),
+                AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Sector', 'sector', ''),
+                AssetsBase.Column('Cell', 'cell', ''),
+                AssetsBase.Column('Village', 'village', ''),
+                AssetsBase.Column('Construction', 'construction_year', ''),
+                AssetsBase.Column('Status', 'status', ''),
+                AssetsBase.Column('Head', 'head_pump', ''),
+                AssetsBase.Column('Power', 'power_pump', ''),
+                AssetsBase.Column('Discharge', 'discharge_pump', ''),
                 AssetsBase.Column('Type', 'pump_type', ''),
                 AssetsBase.Column('Source', 'power_source', ''),
                 AssetsBase.Column('No of Pumps', 'no_pump', ''),
                 AssetsBase.Column('KVA', 'kva', ''),
                 AssetsBase.Column('No of Generators', 'no_generator', ''),
-                AssetsBase.Column('has Water Meter', 'has_water_meter', 'NO'),
+                AssetsBase.Column('Water Meter', 'has_water_meter', 'NO'),
                 AssetsBase.Column('Meter Installation', 'meter_installation_date', ''),
                 AssetsBase.Column('Antihummer Installation', 'installation_antihummer', 'NO'),
                 AssetsBase.Column('Antihummer Capacity', 'capacity_antihummber', ''),
-                AssetsBase.Column('has Chlorination Unit', 'has_clorination', 'NO'),
+                AssetsBase.Column('Chlorination Unit', 'has_clorination', 'NO'),
                 AssetsBase.Column('Observation', 'observation', '')]
 
     def add_table(self, doc):

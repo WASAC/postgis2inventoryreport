@@ -20,6 +20,9 @@ class WaterConnections(AssetsBase):
             self.meter_installation_date = params[13]
             self.disconnection_date = params[14]
             self.observation = params[15]
+            self.sector = params[16]
+            self.cell = params[17]
+            self.village = params[18]
 
     def __init__(self, wss_id):
         super().__init__(wss_id, "Water Connections")
@@ -43,12 +46,18 @@ class WaterConnections(AssetsBase):
         query += "    CASE WHEN a.water_meter = true THEN 'YES' ELSE 'NO' END as water_meter,  "
         query += "    a.meter_installation_date,"
         query += "    a.disconnection_date,"
-        query += "    a.observation"
+        query += "    a.observation, "
+        query += "    h.sector, "
+        query += "    g.cell, "
+        query += "    f.village "
         query += "  FROM water_connection a "
         query += "  INNER JOIN status b "
         query += "  ON a.status = b.code "
         query += "  INNER JOIN rwanda_dem_10m e "
         query += "  ON ST_Intersects(e.rast, a.geom) "
+        query += "  INNER JOIN village f ON ST_Intersects(f.geom, a.geom) "
+        query += "  INNER JOIN cell g ON f.cell_id = g.cell_id "
+        query += "  INNER JOIN sector h ON f.sect_id = h.sect_id "
         if self.connection_type == "Others":
             query += "   WHERE a.connection_type IS NULL "
         else:
@@ -64,11 +73,14 @@ class WaterConnections(AssetsBase):
         doc.add_heading('List of {0}'.format(self.connection_type), level=4)
 
     def create_column_list(self):
-        return [AssetsBase.Column('ID', 'id', ''),
+        return [#AssetsBase.Column('ID', 'id', ''),
                 AssetsBase.Column('X', 'x', ''),
                 AssetsBase.Column('Y', 'y', ''),
                 AssetsBase.Column('Z', 'z', ''),
-                AssetsBase.Column('Type', 'connection_type', ''),
+                AssetsBase.Column('Sector', 'sector', ''),
+                AssetsBase.Column('Cell', 'cell', ''),
+                AssetsBase.Column('Village', 'village', ''),
+                #AssetsBase.Column('Type', 'connection_type', ''),
                 AssetsBase.Column('Construction', 'construction_year', ''),
                 AssetsBase.Column('Status', 'status', ''),
                 AssetsBase.Column('No of Users', 'no_user', ''),

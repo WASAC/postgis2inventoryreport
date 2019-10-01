@@ -21,7 +21,9 @@ class LayerBase(object):
 
     def get_data(self, where):
         sql = "select * from {0} {1}".format(self.table, where)
-        self.df = self.db.get_geodataframe_from_postgis(sql)
+        tmpdf = self.db.get_geodataframe_from_postgis(sql)
+        tmpdf.crs = {'init': 'epsg:4326'}
+        self.df = tmpdf.to_crs(epsg=3857)
 
     def plot_by_filter(self, ax, filter_column, typelist, cmap):
         for type in typelist:

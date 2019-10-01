@@ -14,6 +14,7 @@ class WssList(AssetsBase):
             self.lon = params[6]
             self.lat = params[7]
             self.description = params[8]
+            self.length = params[9]
 
     def __init__(self, dist_id):
         super().__init__(None, "Water Supply Systems")
@@ -40,14 +41,18 @@ class WssList(AssetsBase):
         query += "   c.po_type, "
         query += "   st_x(st_centroid(a.geom)) as lon,  "
         query += "   st_y(st_centroid(a.geom)) as lat, "
-        query += "   a.description "
+        query += "   a.description, "
+        query += "   round(cast(d.length as numeric),2) as length "
         query += " FROM wss a "
         query += " LEFT JOIN management b "
         query += " ON a.wss_id = b.wss_id "
         query += " LEFT JOIN private_operator c "
         query += " ON b.po_id = c.po_id "
-        query += "WHERE a.dist_id = " + str(self.dist_id)
-        query += "ORDER BY a.wss_id "
+        query += " LEFT JOIN (SELECT wss_id, sum(st_length(st_transform(geom,32637))) as length " \
+                 " FROM pipeline GROUP BY wss_id) d "
+        query += " ON a.wss_id = d.wss_id "
+        query += " WHERE a.dist_id = " + str(self.dist_id)
+        query += " ORDER BY a.wss_id "
         result = db.execute(query)
         self.assetsList = []
         for data in result:
@@ -57,6 +62,7 @@ class WssList(AssetsBase):
     def create_column_list(self):
         return [AssetsBase.Column('WSS ID', 'wss_id', ''),
                 AssetsBase.Column('Name', 'wss_name', '0'),
+                AssetsBase.Column('Length(km)', 'length', '0.0'),
                 AssetsBase.Column('Type', 'wss_type', '0'),
                 AssetsBase.Column('Status', 'status', ''),
                 AssetsBase.Column('Management', 'po_name', ''),

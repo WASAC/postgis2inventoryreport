@@ -16,6 +16,9 @@ class WaterSources(AssetsBase):
             self.has_water_meter = params[9]
             self.has_clorination = params[10]
             self.source_protected = params[11]
+            self.sector = params[12]
+            self.cell = params[13]
+            self.village = params[14]
 
     def __init__(self, wss_id):
         super().__init__(wss_id, "Water Sources")
@@ -34,12 +37,18 @@ class WaterSources(AssetsBase):
         query += "    a.observation,  "
         query += "    CASE WHEN a.water_meter = true THEN 'YES' ELSE 'NO' END as has_water_meter,"
         query += "    CASE WHEN a.chlorination_unit = true THEN 'YES' ELSE 'NO' END as has_clorination, "
-        query += "    CASE WHEN a.source_protected = true THEN 'YES' ELSE 'NO' END as source_protected "
+        query += "    CASE WHEN a.source_protected = true THEN 'YES' ELSE 'NO' END as source_protected, "
+        query += "    h.sector, "
+        query += "    g.cell, "
+        query += "    f.village "
         query += "  FROM watersource a "
         query += "  INNER JOIN status b "
         query += "  ON a.status = b.code "
         query += "  INNER JOIN rwanda_dem_10m e "
         query += "  ON ST_Intersects(e.rast, a.geom) "
+        query += "  INNER JOIN village f ON ST_Intersects(f.geom, a.geom) "
+        query += "  INNER JOIN cell g ON f.cell_id = g.cell_id "
+        query += "  INNER JOIN sector h ON f.sect_id = h.sect_id "
         query += "  WHERE "
         query += "   a.wss_id = {0}".format(self.wss_id)
         result = db.execute(query)
@@ -49,13 +58,17 @@ class WaterSources(AssetsBase):
         return self.assetsList
 
     def create_column_list(self):
-        return [AssetsBase.Column('ID', 'id', ''),
+        return [#AssetsBase.Column('ID', 'id', ''),
                 AssetsBase.Column('X', 'x', ''),
                 AssetsBase.Column('Y', 'y', ''),
                 AssetsBase.Column('Z', 'z', ''),
+                AssetsBase.Column('Sector', 'sector', ''),
+                AssetsBase.Column('Cell', 'cell', ''),
+                AssetsBase.Column('Village', 'village', ''),
                 AssetsBase.Column('Construction', 'construction_year', ''),
                 AssetsBase.Column('Status', 'status', ''),
                 AssetsBase.Column('Type', 'source_type', ''),
-                AssetsBase.Column('has Water Meter', 'has_water_meter', 'NO'),
-                AssetsBase.Column('has Chlorination Unit', 'has_clorination', 'NO'),
+                AssetsBase.Column('Discharge(l/s)', 'discharge', ''),
+                AssetsBase.Column('Water Meter', 'has_water_meter', 'NO'),
+                AssetsBase.Column('Chlorination Unit', 'has_clorination', 'NO'),
                 AssetsBase.Column('Observation', 'observation', '')]

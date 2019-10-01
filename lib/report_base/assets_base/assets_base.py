@@ -26,6 +26,10 @@ class AssetsBase(ReportBase):
     def create_column_list(self, db):
         raise NotImplementedError()
 
+    @abstractmethod
+    def create_vertical_column_list(self, db):
+        raise NotImplementedError()
+
     def add_table(self, doc, max_col=None):
         if len(self.assetsList) == 0:
             doc.add_paragraph('No item')
@@ -53,6 +57,7 @@ class AssetsBase(ReportBase):
                     row_cells[self.columnList.index(col2)].text = str(_value)
 
     def add_table_vertical(self, doc):
+        self.vertical_col_list = self.create_vertical_column_list()
         for data in self.assetsList:
             doc.add_heading('{0} #{1}'.format( self.assets_type, str(data.id)), level=5)
             table2 = doc.add_table(rows=1, cols=2, style='Table Grid')
@@ -60,7 +65,7 @@ class AssetsBase(ReportBase):
             hdr_cells2[0].text = 'Item'
             hdr_cells2[1].text = 'Desription'
             self.set_repeat_table_header(table2.rows[0])
-            for col in self.columnList:
+            for col in self.vertical_col_list:
                 row_cells2 = table2.add_row().cells
                 row_cells2[0].text = col.label
                 row_cells2[1].text = str(data.__dict__[col.field]) or col.default

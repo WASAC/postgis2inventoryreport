@@ -23,7 +23,7 @@ pip install GDAL-2.4.1-cp37-cp37m-win_amd64.whl
 pip install Fiona-1.8.6-cp37-cp37m-win_amd64.whl
 pip install Shapely-1.6.4.post1-cp37-cp37m-win_amd64.whl
 pip install geopandas
-pip install descartes
+pip install descartesz
 ````
 Before installing geopandas, you can download whl file of GDAL, Fiona and Shapely from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/). You can chose the file depends on your platform(32bit or 64bit, Python version, etc).
 
