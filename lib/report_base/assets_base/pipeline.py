@@ -38,10 +38,7 @@ class PipelineList(AssetsBase):
         query += "    SELECT  "
         query += "      material,  "
         query += "      cast(pipe_size as integer) as pipe_size,  "
-        query += "      cast(to_char(current_timestamp, 'YYYY') as integer) - cast(COALESCE( "
-        query += "       CASE WHEN (rehabilitation_year ~ '^[0-9]{4}$') = false THEN NULL ELSE rehabilitation_year END,"
-        query += "       CASE WHEN (construction_year ~ '^[0-9]{4}$') = false  THEN NULL ELSE construction_year END,"
-        query += "       NULL) as integer) as diff_const_year, "
+        query += "      cast(to_char(current_timestamp, 'YYYY') as integer) - COALESCE(rehabilitation_year, construction_year) as diff_const_year, "
         query += "      cast(ST_LENGTH(ST_TRANSFORM(geom, 32736)) as numeric) as pipe_length "
         query += "    FROM pipeline "
         query += "    WHERE wss_id = {0} ".format(str(self.wss_id))

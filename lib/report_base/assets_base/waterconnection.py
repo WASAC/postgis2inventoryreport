@@ -35,8 +35,7 @@ class WaterConnections(AssetsBase):
         query += "    round(cast(st_y(a.geom) as numeric),6) as y,  "
         query += "    cast(ST_Value(e.rast, 1, a.geom) as integer) as z,  "
         query += "    a.connection_type, "
-        query += "    COALESCE(a.rehabilitation_year," \
-                 "cast(a.construction_year as character varying)) as construction_year, "
+        query += "    COALESCE(a.rehabilitation_year, a.construction_year) as construction_year, "
         query += "    b.status,  "
         query += "    a.no_user,"
         query += "    a.customer_name,"

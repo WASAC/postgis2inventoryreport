@@ -31,8 +31,7 @@ class Chambers(AssetsBase):
         query += "     cast(ST_Value(e.rast, 1, a.geom) as integer) as z,  "
         query += "     a.chamber_size,  "
         query += "     a.material,  "
-        query += "    COALESCE(a.rehabilitation_year," \
-                 "cast(a.construction_year as character varying)) as construction_year,  "
+        query += "    COALESCE(a.rehabilitation_year, a.construction_year) as construction_year,  "
         query += "     b.status,  "
         query += "     a.observation,  "
         query += "     CASE WHEN a.is_breakpressure = true THEN 'YES' ELSE 'NO' END as for_breakpressure,  "

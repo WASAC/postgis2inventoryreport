@@ -34,8 +34,7 @@ class Reservoirs(AssetsBase):
         query += "    a.reservoir_type,  "
         query += "    a.capacity,"
         query += "    a.material, "
-        query += "    COALESCE(a.rehabilitation_year," \
-                 "cast(a.construction_year as character varying)) as construction_year,  "
+        query += "    COALESCE(a.rehabilitation_year, a.construction_year) as construction_year,  "
         query += "    b.status,  "
         query += "    a.observation,  "
         query += "    CASE WHEN a.water_meter = true THEN 'YES' ELSE 'NO' END as has_water_meter,"
