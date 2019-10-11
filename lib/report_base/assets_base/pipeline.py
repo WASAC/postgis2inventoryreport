@@ -15,8 +15,9 @@ class PipelineList(AssetsBase):
             self.more_than_twenty_years = params[8]
             self.total_length_each_material = params[9]
 
-    def __init__(self, wss_id):
+    def __init__(self, wss_id, dist_id):
         super().__init__(wss_id, "Pipeline")
+        self.dist_id = dist_id
 
     def get_assets_info(self, db):
         query = "  SELECT "
@@ -38,12 +39,17 @@ class PipelineList(AssetsBase):
         query += "    sum(x.pipe_length) as pipe_length "
         query += "  FROM ( "
         query += "    SELECT  "
-        query += "      material,  "
-        query += "      cast(pipe_size as integer) as pipe_size,  "
-        query += "      cast(to_char(current_timestamp, 'YYYY') as integer) - COALESCE(rehabilitation_year, construction_year) as diff_const_year, "
-        query += "      cast(ST_LENGTH(ST_TRANSFORM(geom, 32736)) as numeric) as pipe_length "
+        query += "      pipeline.material,  "
+        query += "      cast(pipeline.pipe_size as integer) as pipe_size,  "
+        query += "      cast(to_char(current_timestamp, 'YYYY') as integer) - " \
+                 "COALESCE(pipeline.rehabilitation_year, pipeline.construction_year) as diff_const_year, "
+        query += "      cast(ST_LENGTH(ST_TRANSFORM(pipeline.geom, 32736)) as numeric) as pipe_length "
         query += "    FROM pipeline "
-        query += "    WHERE wss_id = {0} ".format(str(self.wss_id))
+        if self.wss_id is not None:
+            query += "    WHERE pipeline.wss_id = {0} ".format(str(self.wss_id))
+        else:
+            query += "  INNER JOIN wss ON pipeline.wss_id = wss.wss_id"
+            query += "    WHERE wss.dist_id = {0} ".format(str(self.dist_id))
         query += "  ) x "
         query += "  GROUP BY "
         query += "    x.material, "
@@ -88,9 +94,10 @@ class PipelineList(AssetsBase):
         self.set_repeat_table_header(table.rows[1])
 
         sum_unknown = 0.0
-        sum_three = 0.0
+        sum_one = 0.0
         sum_five = 0.0
         sum_ten = 0.0
+        sum_fifteen = 0.0
         sum_twenty = 0.0
         sum_more_twenty = 0.0
         sum_total = 0.0
@@ -109,20 +116,22 @@ class PipelineList(AssetsBase):
             row_cells[9].text = str(data.total_length_each_material).replace('None', '000') or '0.00'
 
             sum_unknown += float(row_cells[2].text)
-            sum_three += float(row_cells[3].text)
+            sum_one += float(row_cells[3].text)
             sum_five += float(row_cells[4].text)
             sum_ten += float(row_cells[5].text)
-            sum_twenty += float(row_cells[6].text)
-            sum_more_twenty += float(row_cells[7].text)
-            sum_total += float(row_cells[8].text)
+            sum_fifteen += float(row_cells[6].text)
+            sum_twenty += float(row_cells[7].text)
+            sum_more_twenty += float(row_cells[8].text)
+            sum_total += float(row_cells[9].text)
 
         row_cells = table.add_row().cells
         row_cells[0].text = 'Total Length'
         row_cells[0].merge(row_cells[1])
         row_cells[2].text = str(round(sum_unknown, 2)) or '0.00'
-        row_cells[3].text = str(round(sum_three, 2)) or '0.00'
+        row_cells[3].text = str(round(sum_one, 2)) or '0.00'
         row_cells[4].text = str(round(sum_five, 2)) or '0.00'
         row_cells[5].text = str(round(sum_ten, 2)) or '0.00'
-        row_cells[6].text = str(round(sum_twenty, 2)) or '0.00'
-        row_cells[7].text = str(round(sum_more_twenty, 2)) or '0.00'
-        row_cells[8].text = str(round(sum_total, 2)) or '0.00'
+        row_cells[6].text = str(round(sum_fifteen, 2)) or '0.00'
+        row_cells[7].text = str(round(sum_twenty, 2)) or '0.00'
+        row_cells[8].text = str(round(sum_more_twenty, 2)) or '0.00'
+        row_cells[9].text = str(round(sum_total, 2)) or '0.00'

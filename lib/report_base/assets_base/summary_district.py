@@ -2,7 +2,7 @@ from lib.report_base.assets_base.assets_base import AssetsBase
 from lib.report_base.assets_base.pipeline import PipelineList
 
 
-class Summary(AssetsBase):
+class SummaryDistrict(AssetsBase):
 
     class Table(object):
         def __init__(self, params):
@@ -15,11 +15,12 @@ class Summary(AssetsBase):
             self.no_not = params[6]
             self.no_total = params[7]
 
-    def __init__(self, wss_id):
-        super().__init__(wss_id, "Assets")
+    def __init__(self, dist_id):
+        super().__init__(None, "Water Assets")
+        self.dist_id = dist_id
 
     def add_main_title(self, doc):
-        doc.add_heading('Summary of {0}'.format(self.assets_type), level=3)
+        doc.add_heading('Summary of {0} in Districts'.format(self.assets_type), level=2)
 
     def get_assets_info(self, db):
         query = " SELECT * FROM("
@@ -34,8 +35,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM water_connection a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.connection_type = 'Household'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.connection_type"
         query += " UNION"
         query += " SELECT "
@@ -48,8 +51,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM water_connection a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.connection_type = 'Public Tap'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.connection_type"
         query += " UNION"
         query += " SELECT "
@@ -62,8 +67,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM water_connection a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.connection_type = 'Water Kiosk'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.connection_type"
         query += " UNION"
         query += " SELECT "
@@ -76,8 +83,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM water_connection a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.connection_type = 'Industrial'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.connection_type"
         query += " UNION"
         query += " SELECT "
@@ -90,8 +99,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM water_connection a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.connection_type NOT IN ('Household', 'Public Tap', 'Water Kiosk', 'Industrial')"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.connection_type"
         query += " UNION"
         #Chamber Summary
@@ -105,8 +116,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'Valve chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -119,8 +132,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'Air release chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -133,8 +148,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'Washout chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -147,8 +164,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'Break Pressure chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -161,8 +180,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'PRV chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -175,8 +196,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'Starting chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -189,8 +212,10 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM chamber a"
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
         query += " WHERE a.chamber_type = 'Collection chamber'"
-        query += " AND a.wss_id = {0} "
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, a.chamber_type"
         query += " UNION"
         query += " SELECT "
@@ -203,7 +228,9 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM pumping_station a"
-        query += " WHERE a.wss_id = {0} "
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, item"
         query += " UNION"
         query += " SELECT "
@@ -216,7 +243,9 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM reservoir a"
-        query += " WHERE a.wss_id = {0} "
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, item"
         query += " UNION"
         query += " SELECT "
@@ -229,15 +258,17 @@ class Summary(AssetsBase):
         query += "   COUNT(CASE WHEN a.status = 4 THEN a.status END) as no_not,"
         query += "   COUNT(*) as no_total"
         query += " FROM watersource a "
-        query += " WHERE a.wss_id = {0} "
+        query += " INNER JOIN wss b"
+        query += " ON a.wss_id = b.wss_id"
+        query += " AND b.dist_id = {0} "
         query += " GROUP BY no, item"
         query += " ) x"
         query += " ORDER BY x.no"
-        query = query.format(self.wss_id)
+        query = query.format(self.dist_id)
         result = db.execute(query)
         self.assetsList = []
         for data in result:
-            self.assetsList.append(Summary.Table(data))
+            self.assetsList.append(SummaryDistrict.Table(data))
         return self.assetsList
 
     def create_column_list(self):
@@ -252,7 +283,7 @@ class Summary(AssetsBase):
     def create(self, db, doc):
         self.add_main_title(doc)
 
-        pipe_list_obj = PipelineList(self.wss_id, None)
+        pipe_list_obj = PipelineList(None, self.dist_id)
         pipe_list_obj.get_assets_info(db)
         pipe_list_obj.add_table(doc)
         self.add_break(doc)

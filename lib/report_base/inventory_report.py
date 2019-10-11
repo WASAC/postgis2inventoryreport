@@ -5,6 +5,7 @@ from docx import Document
 from lib.report_base.report_base import ReportBase
 from lib.report_base.assets_base.wss import WssList
 from lib.report_base.assets_base.summary import Summary
+from lib.report_base.assets_base.summary_district import SummaryDistrict
 from lib.report_base.assets_base.chamber import Chambers
 from lib.report_base.assets_base.reservoir import Reservoirs
 from lib.report_base.assets_base.pumping_station import PumpingStations
@@ -49,6 +50,9 @@ class InventoryReport(ReportBase):
 
         wss_list_obj = WssList(self.district.dist_id)
         wss_list = wss_list_obj.create(self.db, doc)
+
+        _summary = SummaryDistrict(self.district.dist_id)
+        _summary.create(self.db, doc)
 
         for wss_data in wss_list:
             doc.add_heading('{0} {1} WSS'.format(wss_data.wss_id, wss_data.wss_name), level=1)
