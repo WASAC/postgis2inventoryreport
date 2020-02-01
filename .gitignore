@@ -1,3 +1,8 @@
 /.idea
 /venv
 /geopandas
+/lib/__pycache__/
+/lib/layer/__pycache__/
+/lib/map/__pycache__/
+/lib/report_base/__pycache__/
+/lib/report_base/assets_base/__pycache__/

@@ -14,16 +14,21 @@ A simple tool for exporting from a PostGIS table to Inventory Data Reports in Rw
 [descartes](https://bitbucket.org/sgillies/descartes/src/default/) 
 are already installed and in your ````PATH````.
 
-The following is example of installation procedures by pip installation.
+You can install using pip by requirements.txt as follow.
+````
+pip install -r requirements.txt
+````
+
+Or the following is example of installation procedures by pip installation manually.
 ````
 pip install psycopg2
 pip install python-docx
 pip install matplotlib
-pip install GDAL-2.4.1-cp37-cp37m-win_amd64.whl
-pip install Fiona-1.8.6-cp37-cp37m-win_amd64.whl
-pip install Shapely-1.6.4.post1-cp37-cp37m-win_amd64.whl
+pip install GDAL-2.4.1-cp37-cp37m-win_amd64.whl or pip install GDAL==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
+pip install fiona
+pip install shapely
 pip install geopandas
-pip install descartesz
+pip install descartes
 ````
 Before installing geopandas, you can download whl file of GDAL, Fiona and Shapely from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/). You can chose the file depends on your platform(32bit or 64bit, Python version, etc).
 
@@ -52,7 +57,7 @@ But this script will not create the explanation for each district and wss. After
 
 Before running the script, kindly check the database settings at command line parameters.
 ````
-python postgis2inventoryreport.py -d yourdatabase -H localhost - p 5432 -u user -w securePassword
+python postgis2inventoryreport.py -d yourdatabase -H localhost -p 5432 -u user -w securePassword
 ````
 
 If you want to filter only specific dictricts, use ````-l```` parameter to list ID of district by comma(,)
