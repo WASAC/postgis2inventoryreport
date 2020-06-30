@@ -62,7 +62,7 @@ class WssList(AssetsBase):
     def create_column_list(self):
         return [AssetsBase.Column('WSS ID', 'wss_id', ''),
                 AssetsBase.Column('Name', 'wss_name', '0'),
-                AssetsBase.Column('Length(km)', 'length', '0.0'),
+                AssetsBase.Column('Length(m)', 'length', '0.0'),
                 AssetsBase.Column('Type', 'wss_type', '0'),
                 AssetsBase.Column('Status', 'status', ''),
                 AssetsBase.Column('Management', 'po_name', ''),
